@@ -2,6 +2,16 @@
 
 A comprehensive review and comparison website for AI website builders, built with [Astro](https://astro.build). Features independent, in-depth reviews of 15+ AI website building tools with side-by-side comparison capabilities.
 
+## 🖼️ Screenshots
+
+| Homepage | Reviews List |
+|----------|-------------|
+| ![Homepage](imgs/homepage.png) | ![Reviews](imgs/reviews.png) |
+
+| Tool Comparison | Review Detail |
+|-----------------|---------------|
+| ![Comparison](imgs/comparison.png) | ![Review Detail](imgs/review-detail.png) |
+
 ## Features
 
 - **Expert Reviews** - Deep-dive reviews of 15+ popular AI website builders based on 200+ hours of hands-on testing
@@ -28,6 +38,7 @@ A comprehensive review and comparison website for AI website builders, built wit
 ```
 /
 ├── public/                      # Static assets (images, favicons)
+├── imgs/                        # Screenshots for README
 ├── src/
 │   ├── components/              # UI Components
 │   │   ├── layout/              # Layout components
@@ -55,7 +66,8 @@ A comprehensive review and comparison website for AI website builders, built wit
 │   │   │   ├── webflow-ai.md
 │   │   │   └── lovable.md
 │   │   └── blog/                # Blog articles
-│   │       └── methodology.md
+│   │       ├── methodology.md
+│   │       └── welcome.md
 │   ├── layouts/                 # Page layout templates
 │   │   ├── BaseLayout.astro     # Base layout with header/footer
 │   │   ├── ReviewLayout.astro   # Layout for review pages
