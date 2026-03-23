@@ -1,0 +1,50 @@
+---
+interface Props {
+  link:     string;
+  text?:    string;
+  variant?: 'primary' | 'secondary' | 'outline';
+  size?:    'sm' | 'md' | 'lg';
+  fullWidth?: boolean;
+}
+
+const {
+  link,
+  text      = 'Try for Free',
+  variant   = 'primary',
+  size      = 'md',
+  fullWidth = false,
+} = Astro.props;
+
+const variantClasses = {
+  primary:  'bg-blue-600 hover:bg-blue-700 text-white border-transparent',
+  secondary:'bg-amber-500 hover:bg-amber-600 text-white border-transparent',
+  outline:  'bg-transparent hover:bg-blue-50 text-blue-600 border-2 border-blue-600',
+};
+
+const sizeClasses = {
+  sm: 'py-2 px-4 text-sm',
+  md: 'py-3 px-6 text-base',
+  lg: 'py-4 px-8 text-lg',
+};
+---
+
+<a
+  href={link}
+  target="_blank"
+  rel="nofollow noopener sponsored"
+  class={`
+    inline-flex items-center justify-center gap-2
+    font-bold rounded-lg border
+    transition-all duration-200
+    ${variantClasses[variant]}
+    ${sizeClasses[size]}
+    ${fullWidth ? 'w-full' : ''}
+  `}
+>
+  {text}
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+    <polyline points="15 3 21 3 21 9"/>
+    <line x1="10" y1="14" x2="21" y2="3"/>
+  </svg>
+</a>

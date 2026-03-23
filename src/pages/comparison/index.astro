@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout        from '../../layouts/BaseLayout.astro';
+import CompareTable      from '../../components/CompareTable';
+
+const allTools = await getCollection('tools');
+const toolsData = allTools
+  .sort((a, b) => b.data.rating - a.data.rating)
+  .map(tool => ({
+    name:          tool.data.name,
+    slug:          tool.data.slug,
+    rating:        tool.data.rating,
+    price:         tool.data.price,
+    features:      tool.data.features,
+    pros:          tool.data.pros,
+    cons:          tool.data.cons,
+    bestFor:       tool.data.bestFor,
+    affiliateLink: tool.data.affiliateLink,
+  }));
+---
+
+<BaseLayout
+  title="AI Website Builder Comparison Tool [2025]"
+  description="Compare AI website builders side by side. Select up to 3 tools to see a detailed feature and pricing comparison."
+>
+  <section class="max-w-6xl mx-auto px-4 py-12">
+    <h1 class="text-4xl font-extrabold text-gray-900 mb-3">
+      Compare AI Website Builders
+    </h1>
+    <p class="text-lg text-gray-600 mb-8">
+      Select up to 3 tools to see a detailed side-by-side comparison of features, pricing, and more.
+    </p>
+
+    <!-- React Island: client:load hydrates the component immediately on page load -->
+    <CompareTable client:load tools={toolsData} />
+  </section>
+</BaseLayout>

@@ -1,0 +1,65 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection }       from 'astro:content';
+import BaseLayout              from '../../layouts/BaseLayout.astro';
+import ToolCard                from '../../components/review/ToolCard.astro';
+
+type CategoryValue = 'blog' | 'ecommerce' | 'portfolio' | 'free';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const CATEGORIES: Record<string, { label: string; value: CategoryValue; description: string }> = {
+    'blog-builders': {
+      label: 'Blog Builders',
+      value: 'blog',
+      description: 'Best AI website builders for creating blogs and content sites.',
+    },
+    'ecommerce': {
+      label: 'Ecommerce',
+      value: 'ecommerce',
+      description: 'Best AI website builders for online stores and ecommerce businesses.',
+    },
+    'portfolio': {
+      label: 'Portfolio',
+      value: 'portfolio',
+      description: 'Best AI website builders for showcasing your work and portfolio.',
+    },
+    'free': {
+      label: 'Free Options',
+      value: 'free',
+      description: 'Best free AI website builders with no upfront cost.',
+    },
+  };
+
+  const allTools = await getCollection('tools');
+  return Object.entries(CATEGORIES).map(([slug, { label, value, description }]) => ({
+    params: { slug },
+    props: {
+      label,
+      description,
+      tools: allTools
+        .filter(t => t.data.categories.includes(value))
+        .sort((a, b) => b.data.rating - a.data.rating),
+    },
+  }));
+};
+
+const { label, description, tools } = Astro.props;
+---
+
+<BaseLayout
+  title={`Best AI Website Builders for ${label} [2025]`}
+  description={description}
+>
+  <section class="max-w-4xl mx-auto px-4 py-12">
+    <p class="text-sm text-blue-600 font-medium mb-2">
+      <a href="/best-ai-website-builder/" class="hover:underline">All Reviews</a> → {label}
+    </p>
+    <h1 class="text-4xl font-extrabold text-gray-900 mb-3">
+      Best AI Website Builders for {label} [2025]
+    </h1>
+    <p class="text-lg text-gray-600 mb-10">{description}</p>
+    <div class="space-y-6">
+      {tools.map((tool, i) => <ToolCard tool={tool} rank={i + 1} />)}
+    </div>
+  </section>
+</BaseLayout>

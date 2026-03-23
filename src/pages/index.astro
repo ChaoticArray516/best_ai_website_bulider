@@ -1,0 +1,72 @@
+---
+import { getCollection }         from 'astro:content';
+import BaseLayout                from '../layouts/BaseLayout.astro';
+import ToolCard                  from '../components/review/ToolCard.astro';
+import { generateWebsiteSchema } from '../utils/seo';
+import { SITE_DESCRIPTION }      from '../utils/constants';
+
+const allTools = await getCollection('tools');
+const topTools = allTools
+  .sort((a, b) => b.data.rating - a.data.rating)
+  .slice(0, 5);
+
+const websiteSchema = generateWebsiteSchema();
+---
+
+<BaseLayout
+  title="Best AI Website Builders [2025]: Top Picks Reviewed"
+  description={SITE_DESCRIPTION}
+  schemaData={websiteSchema}
+>
+
+  <!-- Hero Section -->
+  <!-- Background gradient: from blue-50 to white -->
+  <section class="bg-gradient-to-b from-blue-50 to-white py-16 md:py-24 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="inline-block bg-blue-100 text-blue-700 text-sm font-semibold px-4 py-1.5 rounded-full mb-6">
+        Updated March 2025 · 15+ Tools Tested
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-6">
+        Best AI Website Builders [2025]:<br class="hidden md:block" />
+        Top Picks Reviewed & Compared
+      </h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+        We spent 200+ hours testing every major AI website builder.
+        Here are our top picks based on ease of use, features, pricing, and SEO performance.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4 text-sm text-gray-500">
+        <span class="flex items-center gap-1.5"><span class="text-green-500 font-bold">✓</span> Independent reviews</span>
+        <span class="flex items-center gap-1.5"><span class="text-green-500 font-bold">✓</span> No paid placements</span>
+        <span class="flex items-center gap-1.5"><span class="text-green-500 font-bold">✓</span> Updated monthly</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Top 5 Tools -->
+  <section class="max-w-4xl mx-auto px-4 py-12">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Our Top 5 Picks</h2>
+      <a href="/best-ai-website-builder/" class="text-sm text-blue-600 hover:text-blue-700 font-medium hover:underline">
+        View all 15 reviews →
+      </a>
+    </div>
+    <div class="space-y-6">
+      {topTools.map((tool, index) => (
+        <ToolCard tool={tool} rank={index + 1} />
+      ))}
+    </div>
+  </section>
+
+  <!-- Bottom CTA Banner -->
+  <!-- Background: blue-600 -->
+  <section class="bg-blue-600 text-white py-12 px-4 mt-8">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-2xl md:text-3xl font-bold mb-4">Not sure which one to choose?</h2>
+      <p class="text-blue-100 mb-6">Use our comparison tool to see a side-by-side breakdown of any 2-3 tools.</p>
+      <a href="/comparison/" class="inline-block bg-white text-blue-600 font-bold py-3 px-8 rounded-lg hover:bg-blue-50 transition-colors">
+        Compare Tools Side by Side →
+      </a>
+    </div>
+  </section>
+
+</BaseLayout>

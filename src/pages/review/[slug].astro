@@ -1,0 +1,133 @@
+---
+import type { GetStaticPaths }    from 'astro';
+import { getCollection, render }  from 'astro:content';
+import BaseLayout                 from '../../layouts/BaseLayout.astro';
+import AffiliateBtn               from '../../components/AffiliateBtn.astro';
+import RatingStars                from '../../components/review/RatingStars.astro';
+import { generateReviewSchema }   from '../../utils/seo';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const tools = await getCollection('tools');
+  return tools.map(tool => ({
+    params: { slug: tool.id },
+    props:  { tool },
+  }));
+};
+
+const { tool }    = Astro.props;
+const { Content } = await render(tool);
+const reviewSchema = generateReviewSchema(tool);
+const { name, tagline, rating, ratingBreakdown, price, features, pros, cons, bestFor, affiliateLink } = tool.data;
+---
+
+<BaseLayout
+  title={`${name} Review [2025]: Pros, Cons & Pricing`}
+  description={`In-depth ${name} review. We tested every feature to help you decide if it's right for you. Rating: ${rating}/5.`}
+  schemaData={reviewSchema}
+  type="article"
+>
+  <article class="max-w-4xl mx-auto px-4 py-12">
+
+    <!-- Tool Header -->
+    <header class="mb-8">
+      <p class="text-sm text-blue-600 font-medium mb-2">
+        <a href="/best-ai-website-builder/" class="hover:underline">Reviews</a> → {name}
+      </p>
+      <h1 class="text-4xl font-extrabold text-gray-900 mb-3">
+        {name} Review [2025]
+      </h1>
+      <p class="text-xl text-gray-600">{tagline}</p>
+    </header>
+
+    <!-- Score Card -->
+    <!-- Background: blue-50 (rgb 239,246,255), Border: blue-200 (rgb 191,219,254) -->
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+        <div class="text-center">
+          <div class="text-3xl font-extrabold text-amber-500">{rating}</div>
+          <RatingStars rating={rating} />
+          <div class="text-xs text-gray-500 mt-1">Overall</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl font-bold text-gray-900">{ratingBreakdown.easeOfUse}</div>
+          <div class="text-xs text-gray-500 mt-1">Ease of Use</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl font-bold text-gray-900">{ratingBreakdown.features}</div>
+          <div class="text-xs text-gray-500 mt-1">Features</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl font-bold text-gray-900">{ratingBreakdown.pricing}</div>
+          <div class="text-xs text-gray-500 mt-1">Value</div>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row items-center gap-3">
+        <AffiliateBtn link={affiliateLink} text={`Visit ${name}`} variant="secondary" size="lg" />
+        <p class="text-sm text-gray-600">
+          {price.freePlan ? '✓ Free plan available' : `Starting from $${price.startingPrice}/mo`}
+        </p>
+      </div>
+    </div>
+
+    <!-- Pros & Cons -->
+    <div class="grid md:grid-cols-2 gap-6 mb-8">
+      <div class="bg-green-50 border border-green-200 rounded-xl p-5">
+        <h3 class="font-bold text-green-800 mb-3 flex items-center gap-2">
+          <span class="text-green-500">✓</span> Pros
+        </h3>
+        <ul class="space-y-2">
+          {pros.map(pro => (
+            <li class="flex items-start gap-2 text-sm text-gray-700">
+              <span class="text-green-500 font-bold shrink-0 mt-0.5">✓</span> {pro}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="bg-red-50 border border-red-200 rounded-xl p-5">
+        <h3 class="font-bold text-red-800 mb-3 flex items-center gap-2">
+          <span class="text-red-500">✗</span> Cons
+        </h3>
+        <ul class="space-y-2">
+          {cons.map(con => (
+            <li class="flex items-start gap-2 text-sm text-gray-700">
+              <span class="text-red-500 font-bold shrink-0 mt-0.5">✗</span> {con}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Features List -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Key Features</h2>
+      <ul class="grid sm:grid-cols-2 gap-2">
+        {features.map(feature => (
+          <li class="flex items-start gap-2 text-sm text-gray-700 bg-gray-50 rounded-lg p-3">
+            <span class="text-blue-500 font-bold shrink-0">→</span> {feature}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Best For -->
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-8">
+      <p class="text-sm font-semibold text-amber-800">
+        ⭐ Best for: <span class="font-normal text-gray-700">{bestFor}</span>
+      </p>
+    </div>
+
+    <!-- Markdown Body Content -->
+    <div class="prose prose-lg max-w-none text-gray-700 mb-12">
+      <Content />
+    </div>
+
+    <!-- Bottom CTA -->
+    <!-- Background: gray-900 (rgb 17,24,39) -->
+    <div class="bg-gray-900 text-white rounded-xl p-8 text-center">
+      <h3 class="text-2xl font-bold mb-3">Ready to try {name}?</h3>
+      <p class="text-gray-300 mb-6">Start building your website today with AI assistance.</p>
+      <AffiliateBtn link={affiliateLink} text={`Get Started with ${name}`} variant="secondary" size="lg" />
+    </div>
+
+  </article>
+</BaseLayout>

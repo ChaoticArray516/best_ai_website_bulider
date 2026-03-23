@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Disallow internal tool paths
+Disallow: /api/
+
+# Sitemap location for search engine discovery
+Sitemap: https://bestaiwebsitebuilder.com/sitemap-index.xml

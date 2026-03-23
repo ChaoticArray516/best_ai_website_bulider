@@ -1,0 +1,39 @@
+---
+const navLinks = [
+  { href: '/best-ai-website-builder/', label: 'Reviews' },
+  { href: '/comparison/',              label: 'Compare' },
+  { href: '/category/blog-builders/',  label: 'Categories' },
+  { href: '/blog/',                    label: 'Blog' },
+];
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2 font-extrabold text-lg text-gray-900 hover:text-blue-600 transition-colors">
+        <span class="text-blue-600">⚡</span>
+        Best AI Website Builder
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center gap-1">
+        {navLinks.map(link => (
+          <a
+            href={link.href}
+            class={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              currentPath.startsWith(link.href)
+                ? 'bg-blue-50 text-blue-600'
+                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+            }`}
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
+    </div>
+  </div>
+</header>

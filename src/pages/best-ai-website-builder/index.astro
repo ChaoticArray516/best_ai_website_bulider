@@ -1,0 +1,92 @@
+---
+import { getCollection }            from 'astro:content';
+import BaseLayout                   from '../../layouts/BaseLayout.astro';
+import ToolCard                     from '../../components/review/ToolCard.astro';
+import { generateItemListSchema }   from '../../utils/seo';
+
+const allTools = await getCollection('tools');
+const sortedTools = allTools.sort((a, b) => b.data.rating - a.data.rating);
+const itemListSchema = generateItemListSchema(sortedTools);
+
+const faqItems = [
+  { question: "What is the best AI website builder in 2025?", answer: "Based on our testing, Wix AI offers the best overall experience for most users, combining ease of use with powerful features." },
+  { question: "Are AI website builders good for SEO?", answer: "Yes, most modern AI website builders include built-in SEO tools. However, the quality varies significantly between platforms." },
+  { question: "Can I build an ecommerce store with an AI website builder?", answer: "Absolutely. Wix AI, Squarespace AI, and Webflow AI all support ecommerce functionality." },
+];
+---
+
+<BaseLayout
+  title="Best AI Website Builders [2025]: Complete Guide & Reviews"
+  description="In-depth reviews of the 15 best AI website builders. Compare features, pricing, and pros & cons to find the perfect tool."
+  schemaData={itemListSchema}
+>
+  <article class="max-w-4xl mx-auto px-4 py-12">
+
+    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-6">
+      Best AI Website Builders [2025]:<br class="hidden md:block" /> Complete Guide & Reviews
+    </h1>
+
+    <p class="text-xl text-gray-600 mb-4 leading-relaxed">
+      We tested <strong>15+ AI website builders</strong> over 200+ hours to bring you this comprehensive guide.
+      Our reviews cover ease of use, features, pricing, SEO capabilities, and real-world performance.
+    </p>
+
+    <!-- Quick Comparison Table -->
+    <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-10 overflow-x-auto">
+      <h2 class="text-lg font-bold text-gray-900 mb-4">Quick Comparison</h2>
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-gray-200">
+            <th class="text-left py-2 pr-4 font-semibold text-gray-700">Tool</th>
+            <th class="text-left py-2 pr-4 font-semibold text-gray-700">Rating</th>
+            <th class="text-left py-2 pr-4 font-semibold text-gray-700">Starting Price</th>
+            <th class="text-left py-2 font-semibold text-gray-700">Free Plan</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedTools.map(tool => (
+            <tr class="border-b border-gray-100 hover:bg-white transition-colors">
+              <td class="py-2.5 pr-4 font-medium text-gray-900">
+                <a href={`/best-ai-website-builder/${tool.data.slug}/`} class="text-blue-600 hover:underline">{tool.data.name}</a>
+              </td>
+              <td class="py-2.5 pr-4 text-amber-500 font-bold">{tool.data.rating}/5</td>
+              <td class="py-2.5 pr-4 text-gray-700">
+                {tool.data.price.freePlan ? 'Free' : `$${tool.data.price.startingPrice}/mo`}
+              </td>
+              <td class="py-2.5">
+                {tool.data.price.freePlan
+                  ? <span class="text-green-500 font-bold">✓ Yes</span>
+                  : <span class="text-gray-400">✗ No</span>
+                }
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Full Tool List -->
+    <div class="space-y-8">
+      {sortedTools.map((tool, index) => (
+        <ToolCard tool={tool} rank={index + 1} />
+      ))}
+    </div>
+
+    <!-- FAQ Section -->
+    <section class="mt-16 bg-gray-50 rounded-xl p-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+      <div class="space-y-4">
+        {faqItems.map(item => (
+          <details class="bg-white border border-gray-200 rounded-lg p-4 group">
+            <summary class="font-semibold text-gray-900 cursor-pointer list-none flex justify-between items-center">
+              {item.question}
+              <span class="text-gray-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="mt-3 text-gray-600 text-sm leading-relaxed">{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+  </article>
+</BaseLayout>

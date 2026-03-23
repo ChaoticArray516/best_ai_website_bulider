@@ -1,0 +1,56 @@
+---
+import { SITE_NAME, SITE_URL } from '../../utils/constants';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  schemaData?: object | object[];
+  ogImage?: string;
+  type?: 'website' | 'article';
+}
+
+const {
+  title,
+  description,
+  canonicalUrl = Astro.url.href,
+  schemaData,
+  ogImage = `${SITE_URL}/og-default.jpg`,
+  type = 'website',
+} = Astro.props;
+
+const fullTitle = `${title} | ${SITE_NAME}`;
+const schemas = schemaData
+  ? (Array.isArray(schemaData) ? schemaData : [schemaData])
+  : [];
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+
+<!-- Open Graph / Social Sharing -->
+<meta property="og:type"        content={type} />
+<meta property="og:title"       content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image"       content={ogImage} />
+<meta property="og:url"         content={canonicalUrl} />
+<meta property="og:site_name"   content={SITE_NAME} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card"        content="summary_large_image" />
+<meta name="twitter:title"       content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image"       content={ogImage} />
+
+<!-- Google Fonts: Inter -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- JSON-LD Structured Data (Schema.org) -->
+{schemas.map(schema => (
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+))}

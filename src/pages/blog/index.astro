@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = await getCollection('blog');
+posts.sort((a, b) => b.data.datePublished.getTime() - a.data.datePublished.getTime());
+---
+
+<BaseLayout
+  title="Blog - Best AI Website Builder"
+  description="Latest insights, reviews, and guides about AI website builders."
+>
+  <section class="max-w-4xl mx-auto px-4 py-12">
+    <!-- Breadcrumb -->
+    <nav class="text-sm text-blue-600 font-medium mb-6">
+      <a href="/best-ai-website-builder/" class="hover:underline">Home</a>
+      <span class="text-gray-400 mx-2">→</span>
+      <span class="text-gray-600">Blog</span>
+    </nav>
+
+    <!-- Header -->
+    <header class="mb-10">
+      <h1 class="text-4xl font-extrabold text-gray-900 mb-3">Blog</h1>
+      <p class="text-xl text-gray-600">Latest insights, reviews, and guides about AI website builders.</p>
+    </header>
+
+    <!-- Posts Grid -->
+    {posts.length === 0 ? (
+      <div class="text-center py-16 bg-gray-50 rounded-xl">
+        <p class="text-gray-500">No blog posts yet. Check back soon!</p>
+      </div>
+    ) : (
+      <div class="grid gap-6">
+        {posts.map((post) => (
+          <article class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
+            <a href={`/best-ai-website-builder/blog/${post.id}/`} class="block">
+              <h2 class="text-xl font-bold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
+                {post.data.title}
+              </h2>
+              <p class="text-gray-600 mb-4 line-clamp-2">{post.data.description}</p>
+              <div class="flex items-center gap-4 text-sm text-gray-500">
+                <span class="font-medium text-gray-700">{post.data.author}</span>
+                <span>•</span>
+                <time datetime={post.data.datePublished.toISOString()}>
+                  {post.data.datePublished.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </time>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>
