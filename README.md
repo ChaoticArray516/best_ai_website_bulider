@@ -1,6 +1,6 @@
 # Best AI Website Builder
 
-A comprehensive review and comparison website for AI website builders, built with [Astro](https://astro.build). Features independent, in-depth reviews of 15+ AI website building tools with side-by-side comparison capabilities.
+A comprehensive review and comparison website for AI website builders, built with [Astro](https://astro.build). Features independent, in-depth reviews of popular AI website building tools with side-by-side comparison capabilities, search, and educational content.
 
 ## 🖼️ Screenshots
 
@@ -14,10 +14,11 @@ A comprehensive review and comparison website for AI website builders, built wit
 
 ## Features
 
-- **Expert Reviews** - Deep-dive reviews of 15+ popular AI website builders based on 200+ hours of hands-on testing
+- **Expert Reviews** - Deep-dive reviews of 7 popular AI website builders based on hands-on testing
 - **Comparison Tool** - Interactive side-by-side comparison of up to 3 tools (React-powered)
+- **Live Search** - Real-time search and filter tools by name or use case
 - **Category Filtering** - Browse tools by category: Blog, E-commerce, Portfolio, Free Options
-- **Blog & Resources** - Methodology guides, industry insights, and educational content
+- **Blog & Resources** - Methodology guides, industry insights, vibe coding guides, and educational content
 - **SEO Optimized** - Complete Schema.org structured data, sitemap, RSS, and Open Graph support
 - **Affiliate Integration** - Transparent affiliate links with proper disclosure
 
@@ -27,7 +28,7 @@ A comprehensive review and comparison website for AI website builders, built wit
 |------------|---------|---------|
 | [Astro](https://astro.build) | 6.0.8 | Static site generator & web framework |
 | [Tailwind CSS](https://tailwindcss.com) | 4.2.2 | Utility-first CSS framework |
-| [React](https://react.dev) | 19.2.4 | Interactive components (comparison table) |
+| [React](https://react.dev) | 19.2.4 | Interactive components (comparison table, search) |
 | [Lucide React](https://lucide.dev) | 0.577.0 | Icon library |
 | [Astro React](https://docs.astro.build/en/guides/integrations-guide/react/) | 5.0.1 | React integration for Astro |
 | [Astro Sitemap](https://docs.astro.build/en/guides/integrations-guide/sitemap/) | 3.7.1 | Automatic sitemap generation |
@@ -37,7 +38,7 @@ A comprehensive review and comparison website for AI website builders, built wit
 
 ```
 /
-├── public/                      # Static assets (images, favicons)
+├── public/                      # Static assets (images, favicons, robots.txt)
 ├── imgs/                        # Screenshots for README
 ├── src/
 │   ├── components/              # UI Components
@@ -54,6 +55,7 @@ A comprehensive review and comparison website for AI website builders, built wit
 │   │   │   ├── SeoHead.astro    # Meta tags & structured data
 │   │   │   └── BreadcrumbNav.astro # Breadcrumb navigation
 │   │   ├── CompareTable.tsx     # React component for tool comparison
+│   │   ├── ToolSearch.tsx       # React component for live tool search
 │   │   ├── AffiliateBtn.astro   # Affiliate link button with disclosure
 │   │   └── FaqSection.astro     # FAQ accordion component
 │   ├── content/                 # Content collections
@@ -67,7 +69,8 @@ A comprehensive review and comparison website for AI website builders, built wit
 │   │   │   └── lovable.md
 │   │   └── blog/                # Blog articles
 │   │       ├── methodology.md
-│   │       └── welcome.md
+│   │       ├── welcome.md
+│   │       └── what-is-vibe-coding.md
 │   ├── layouts/                 # Page layout templates
 │   │   ├── BaseLayout.astro     # Base layout with header/footer
 │   │   ├── ReviewLayout.astro   # Layout for review pages
@@ -77,6 +80,7 @@ A comprehensive review and comparison website for AI website builders, built wit
 │   │   ├── best-ai-website-builder/        # Full review list page
 │   │   ├── best-ai-website-builder-2025/   # 2025-specific reviews
 │   │   ├── comparison/                     # Tool comparison page
+│   │   ├── developer-tools/                # Developer tools page
 │   │   ├── review/[slug].astro             # Individual tool review (dynamic route)
 │   │   ├── blog/                           # Blog list & articles
 │   │   ├── category/[slug].astro           # Category pages (dynamic)
@@ -92,6 +96,7 @@ A comprehensive review and comparison website for AI website builders, built wit
 │       └── seo.ts               # Schema.org structured data generators
 ├── astro.config.mjs             # Astro configuration
 ├── package.json                 # Dependencies & scripts
+├── tsconfig.json                # TypeScript configuration
 └── README.md                    # This file
 ```
 

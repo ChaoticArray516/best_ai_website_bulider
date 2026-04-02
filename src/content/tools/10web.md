@@ -33,6 +33,9 @@ categories: ["blog", "ecommerce"]
 datePublished: 2025-02-15
 dateModified: 2025-03-15
 featured: false
+exportFormats: ["WordPress", "HTML/CSS"]
+hasApi: false
+communitySize: 8571
 ---
 
 ## What is 10Web?

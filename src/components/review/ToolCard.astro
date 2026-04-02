@@ -1,4 +1,5 @@
 ---
+// ToolCard Component - Displays AI tool information with technical badges
 import type { CollectionEntry } from 'astro:content';
 import AffiliateBtn from '../AffiliateBtn.astro';
 import RatingStars  from './RatingStars.astro';
@@ -9,7 +10,14 @@ interface Props {
 }
 
 const { tool, rank } = Astro.props;
-const { name, tagline, rating, price, pros, bestFor, affiliateLink, featured } = tool.data;
+const {
+  name, tagline, rating, price, pros, bestFor,
+  affiliateLink, featured,
+  exportFormats, hasApi, communitySize,   // New fields from Step 2 schema extension
+} = tool.data;
+
+// Determine if any technical badge should be displayed
+const showBadges = hasApi || (exportFormats && exportFormats.length > 0) || (communitySize && communitySize >= 1000);
 ---
 
 <article class={`
@@ -57,6 +65,27 @@ const { name, tagline, rating, price, pros, bestFor, affiliateLink, featured } =
     </ul>
   </div>
 
+  <!-- Technical Badges (new in Step 3) -->
+  {showBadges && (
+    <div class="flex flex-wrap gap-2 mb-4">
+      {hasApi && (
+        <span class="bg-purple-50 text-purple-700 text-xs font-semibold px-2.5 py-1 rounded-md border border-purple-200">
+          🔌 API Available
+        </span>
+      )}
+      {exportFormats && exportFormats.length > 0 && (
+        <span class="bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-md border border-blue-200">
+          📦 Exports: {exportFormats.join(', ')}
+        </span>
+      )}
+      {communitySize && communitySize >= 1000 && (
+        <span class="bg-green-50 text-green-700 text-xs font-semibold px-2.5 py-1 rounded-md border border-green-200">
+          👥 {communitySize.toLocaleString()} saves
+        </span>
+      )}
+    </div>
+  )}
+
   <!-- Best For -->
   <p class="text-xs text-gray-500 mb-5">
     <span class="font-semibold text-gray-700">Best for:</span> {bestFor}
@@ -65,7 +94,7 @@ const { name, tagline, rating, price, pros, bestFor, affiliateLink, featured } =
   <!-- CTA Row -->
   <div class="flex items-center gap-3">
     <AffiliateBtn link={affiliateLink} text={`Visit ${name}`} variant="primary" />
-    <a href={`/best-ai-website-builder/${tool.data.slug}/`} class="text-sm text-blue-600 hover:text-blue-700 hover:underline font-medium">
+    <a href={`/review/${tool.data.slug}/`} class="text-sm text-blue-600 hover:text-blue-700 hover:underline font-medium">
       Read full review →
     </a>
   </div>

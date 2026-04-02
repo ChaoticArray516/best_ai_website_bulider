@@ -1,7 +1,9 @@
 ---
+// Blog post detail page - Displays individual blog articles with SEO optimization
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
+// Generate static paths for all blog posts using Content Collections v2 API
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   return posts.map(post => ({
@@ -12,21 +14,65 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-const { title, description, datePublished, author } = post.data;
+const { title, description, datePublished, dateModified, author } = post.data;
 ---
 
 <BaseLayout title={title} description={description}>
   <article class="max-w-4xl mx-auto px-4 py-12">
-    <p class="text-sm text-blue-600 font-medium mb-2">
-      <a href="/best-ai-website-builder/" class="hover:underline">Home</a> → Blog
-    </p>
+    <!-- Breadcrumb navigation -->
+    <nav class="text-sm text-blue-600 font-medium mb-2" aria-label="Breadcrumb">
+      <a href="/" class="hover:underline">Home</a>
+      <span class="text-gray-400 mx-2">→</span>
+      <a href="/blog/" class="hover:underline">Blog</a>
+      <span class="text-gray-400 mx-2">→</span>
+      <span class="text-gray-600">Article</span>
+    </nav>
+
+    <!-- Article header -->
     <h1 class="text-4xl font-extrabold text-gray-900 mb-4">{title}</h1>
-    <div class="flex items-center gap-4 text-sm text-gray-500 mb-8">
-      <span>{author}</span>
-      <span>{datePublished.toLocaleDateString()}</span>
+
+    <!-- Article metadata: author, published date, and modified date -->
+    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-8">
+      <span class="font-medium text-gray-700">{author}</span>
+      <span>•</span>
+      <time datetime={datePublished.toISOString()}>
+        Published: {datePublished.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+      </time>
+      {dateModified && dateModified.valueOf() !== datePublished.valueOf() && (
+        <>
+          <span>•</span>
+          <time datetime={dateModified.toISOString()}>
+            Updated: {dateModified.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          </time>
+        </>
+      )}
     </div>
-    <div class="prose prose-lg max-w-none text-gray-700">
+
+    <!-- Article content rendered from Markdown -->
+    <div class="prose prose-lg max-w-none text-gray-700 mb-12">
       <Content />
     </div>
+
+    <!-- Related Articles section for internal linking -->
+    <aside class="border-t border-gray-200 pt-8 mt-12">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Related Articles</h2>
+      <ul class="space-y-3">
+        <li>
+          <a href="/best-ai-website-builder/" class="text-blue-600 hover:text-blue-700 hover:underline">
+            → Best AI Website Builders [2025]: Complete Guide & Reviews
+          </a>
+        </li>
+        <li>
+          <a href="/developer-tools/" class="text-blue-600 hover:text-blue-700 hover:underline">
+            → Best AI Website Builders for Developers [2025]
+          </a>
+        </li>
+        <li>
+          <a href="/comparison/" class="text-blue-600 hover:text-blue-700 hover:underline">
+            → AI Website Builder Comparison Tool
+          </a>
+        </li>
+      </ul>
+    </aside>
   </article>
 </BaseLayout>

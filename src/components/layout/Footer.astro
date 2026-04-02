@@ -1,13 +1,15 @@
 ---
+// Site footer with multi-column navigation and affiliate disclosure
 import { AFFILIATE_DISCLOSURE, CURRENT_YEAR, SITE_NAME } from '../../utils/constants';
 ---
 
 <footer class="bg-gray-800 text-gray-300 mt-20">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+    <!-- Footer grid: 5 columns on large screens -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
 
-      <!-- Brand -->
-      <div>
+      <!-- Brand column -->
+      <div class="lg:col-span-2">
         <p class="font-bold text-white text-lg mb-2">⚡ {SITE_NAME}</p>
         <p class="text-sm leading-relaxed">
           Independent reviews and comparisons of the best AI website builders.
@@ -15,7 +17,7 @@ import { AFFILIATE_DISCLOSURE, CURRENT_YEAR, SITE_NAME } from '../../utils/const
         </p>
       </div>
 
-      <!-- Quick Links -->
+      <!-- Quick Links column -->
       <div>
         <p class="font-semibold text-white mb-3">Quick Links</p>
         <ul class="space-y-2 text-sm">
@@ -26,7 +28,7 @@ import { AFFILIATE_DISCLOSURE, CURRENT_YEAR, SITE_NAME } from '../../utils/const
         </ul>
       </div>
 
-      <!-- Categories -->
+      <!-- Categories column -->
       <div>
         <p class="font-semibold text-white mb-3">Categories</p>
         <ul class="space-y-2 text-sm">
@@ -34,6 +36,17 @@ import { AFFILIATE_DISCLOSURE, CURRENT_YEAR, SITE_NAME } from '../../utils/const
           <li><a href="/category/ecommerce/"     class="hover:text-white transition-colors">Ecommerce</a></li>
           <li><a href="/category/portfolio/"     class="hover:text-white transition-colors">Portfolio</a></li>
           <li><a href="/category/free/"          class="hover:text-white transition-colors">Free Options</a></li>
+        </ul>
+      </div>
+
+      <!-- Developer Resources column (new) -->
+      <div>
+        <p class="font-semibold text-white mb-3">Developer Resources</p>
+        <ul class="space-y-2 text-sm">
+          <li><a href="/developer-tools/"          class="hover:text-white transition-colors">Best Tools for Developers</a></li>
+          <li><a href="/blog/what-is-vibe-coding/" class="hover:text-white transition-colors">What is Vibe Coding?</a></li>
+          <li><a href="/review/bolt-new/"          class="hover:text-white transition-colors">Bolt.new Review</a></li>
+          <li><a href="/review/lovable/"           class="hover:text-white transition-colors">Lovable Review</a></li>
         </ul>
       </div>
 

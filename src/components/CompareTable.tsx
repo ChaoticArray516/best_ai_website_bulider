@@ -1,15 +1,17 @@
 import { useState } from 'react';
 
 interface ToolData {
-  name:         string;
-  slug:         string;
-  rating:       number;
-  price:        { freePlan: boolean; startingPrice: number; currency: string };
-  features:     string[];
-  pros:         string[];
-  cons:         string[];
-  bestFor:      string;
-  affiliateLink:string;
+  name:          string;
+  slug:          string;
+  rating:        number;
+  price:         { freePlan: boolean; startingPrice: number; currency: string };
+  features:      string[];
+  pros:          string[];
+  cons:          string[];
+  bestFor:       string;
+  affiliateLink: string;
+  exportFormats?: string[];   // New field: supported export formats
+  hasApi?:        boolean;    // New field: API availability
 }
 
 interface Props {
@@ -133,6 +135,32 @@ export default function CompareTable({ tools }: Props) {
                         </li>
                       ))}
                     </ul>
+                  </td>
+                ))}
+              </tr>
+
+              {/* Technical Capabilities Row (new in Step 4) */}
+              <tr className="hover:bg-gray-50 transition-colors">
+                <td className="p-4 border-b border-gray-100 text-sm font-semibold text-gray-700 align-top pt-4">
+                  Technical Capabilities
+                </td>
+                {selectedTools.map(t => (
+                  <td key={t.slug} className="p-4 border-b border-gray-100 text-center align-top">
+                    <div className="flex flex-col items-center gap-1.5">
+                      {t.hasApi && (
+                        <span className="bg-purple-50 text-purple-700 text-xs font-semibold px-2 py-0.5 rounded border border-purple-200">
+                          🔌 API
+                        </span>
+                      )}
+                      {t.exportFormats && t.exportFormats.length > 0 && (
+                        <span className="bg-blue-50 text-blue-700 text-xs font-semibold px-2 py-0.5 rounded border border-blue-200">
+                          📦 {t.exportFormats.join(' · ')}
+                        </span>
+                      )}
+                      {!t.hasApi && (!t.exportFormats || t.exportFormats.length === 0) && (
+                        <span className="text-gray-400 text-sm">—</span>
+                      )}
+                    </div>
                   </td>
                 ))}
               </tr>

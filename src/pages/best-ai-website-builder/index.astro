@@ -2,11 +2,26 @@
 import { getCollection }            from 'astro:content';
 import BaseLayout                   from '../../layouts/BaseLayout.astro';
 import ToolCard                     from '../../components/review/ToolCard.astro';
+import ToolSearch                   from '../../components/ToolSearch';
 import { generateItemListSchema }   from '../../utils/seo';
 
 const allTools = await getCollection('tools');
 const sortedTools = allTools.sort((a, b) => b.data.rating - a.data.rating);
 const itemListSchema = generateItemListSchema(sortedTools);
+
+// Build searchable tools array for ToolSearch component (minimal fields for performance)
+const searchableTools = sortedTools.map(tool => ({
+  name:          tool.data.name,
+  slug:          tool.data.slug,
+  tagline:       tool.data.tagline,
+  rating:        tool.data.rating,
+  bestFor:       tool.data.bestFor,
+  affiliateLink: tool.data.affiliateLink,
+  price:         {
+    freePlan:      tool.data.price.freePlan,
+    startingPrice: tool.data.price.startingPrice,
+  },
+}));
 
 const faqItems = [
   { question: "What is the best AI website builder in 2025?", answer: "Based on our testing, Wix AI offers the best overall experience for most users, combining ease of use with powerful features." },
@@ -26,10 +41,13 @@ const faqItems = [
       Best AI Website Builders [2025]:<br class="hidden md:block" /> Complete Guide & Reviews
     </h1>
 
-    <p class="text-xl text-gray-600 mb-4 leading-relaxed">
+    <p class="text-xl text-gray-600 mb-8 leading-relaxed">
       We tested <strong>15+ AI website builders</strong> over 200+ hours to bring you this comprehensive guide.
       Our reviews cover ease of use, features, pricing, SEO capabilities, and real-world performance.
     </p>
+
+    {/* React Island: Real-time tool search with client:load hydration */}
+    <ToolSearch client:load tools={searchableTools} />
 
     <!-- Quick Comparison Table -->
     <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-10 overflow-x-auto">

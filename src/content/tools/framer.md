@@ -34,6 +34,9 @@ categories: ["blog", "portfolio"]
 datePublished: 2025-02-10
 dateModified: 2025-03-12
 featured: true
+exportFormats: ["React", "HTML/CSS"]
+hasApi: false
+communitySize: 132712
 ---
 
 ## What is Framer?

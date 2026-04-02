@@ -49,6 +49,10 @@ const toolsCollection = defineCollection({
 
       /* Display Control */
       featured: z.boolean().default(false),
+      // ── New fields added in Step 2 ──────────────────────────────────
+      exportFormats: z.array(z.string()).optional(),
+      hasApi: z.boolean().default(false),
+      communitySize: z.number().optional(),
     }),
 });
 

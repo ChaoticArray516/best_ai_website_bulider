@@ -1,0 +1,123 @@
+---
+// Developer Tools Landing Page - SEO-optimized page for developer-focused AI tools
+import { getCollection }                                    from 'astro:content';
+import BaseLayout                                           from '../../layouts/BaseLayout.astro';
+import ToolCard                                             from '../../components/review/ToolCard.astro';
+import { generateItemListSchema, generateFaqSchema,
+         generateBreadcrumbSchema }                         from '../../utils/seo';
+
+// Fetch all tools from content collection
+const allTools = await getCollection('tools');
+
+// Filter tools that have API support or export formats (developer-friendly features)
+const devTools = allTools
+  .filter(t => t.data.hasApi || (t.data.exportFormats && t.data.exportFormats.length > 0))
+  .sort((a, b) => b.data.rating - a.data.rating);
+
+// FAQ content for developer-focused questions
+const faqItems = [
+  {
+    question: "Which AI website builder has the best code export?",
+    answer:   "Bolt.new offers the most comprehensive code export, supporting React, Vue, Svelte, Astro, and more frameworks. Lovable and Rocket AI both export clean React code to GitHub. These three are the top choices for developers who want to own their codebase.",
+  },
+  {
+    question: "Do any AI website builders offer a public API?",
+    answer:   "Most AI website builders are closed platforms without a public API. Webflow offers a Content API for reading and writing CMS data. For programmatic site generation, Bolt.new and Rocket AI offer GitHub integration as an alternative to a direct API.",
+  },
+  {
+    question: "What is the best AI website builder for building SaaS products?",
+    answer:   "Lovable and Rocket AI are the top choices for building SaaS products. Both generate full-stack React applications with authentication and database support. Base44 is also excellent for data-driven internal tools and dashboards.",
+  },
+];
+
+// Generate structured data schemas for SEO
+const schemas = [
+  generateItemListSchema(devTools),
+  generateFaqSchema(faqItems),
+  generateBreadcrumbSchema([
+    { name: 'Home',            url: '/' },
+    { name: 'Developer Tools', url: '/developer-tools/' },
+  ]),
+];
+---
+
+<BaseLayout
+  title="Best AI Website Builders for Developers [2025]"
+  description="Compare AI website builders with code export, API access, and GitHub integration. Top picks: Bolt.new, Lovable, Rocket AI, and Webflow AI — reviewed and ranked."
+  schemaData={schemas}
+>
+  <!-- Hero Section with dark background -->
+  <section class="bg-gray-900 text-white py-16 md:py-20 px-4">
+    <div class="max-w-4xl mx-auto">
+      <!-- Breadcrumb navigation -->
+      <nav class="text-sm text-gray-400 mb-6">
+        <a href="/" class="hover:text-white">Home</a>
+        <span class="mx-2">→</span>
+        <span class="text-gray-200">Developer Tools</span>
+      </nav>
+
+      <!-- Last updated badge -->
+      <div class="inline-block bg-blue-600 text-white text-sm font-semibold px-4 py-1.5 rounded-full mb-6">
+        Updated April 2026 · {devTools.length} Tools
+      </div>
+
+      <!-- Main headline -->
+      <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-5">
+        Best AI Website Builders<br class="hidden md:block" /> for Developers [2025]
+      </h1>
+
+      <!-- Subtitle description -->
+      <p class="text-xl text-gray-300 max-w-2xl leading-relaxed">
+        Tools that export clean code, offer API access, and integrate with your development workflow.
+        All tools below support GitHub export or multi-framework output.
+      </p>
+    </div>
+  </section>
+
+  <!-- Why These Tools explanation section -->
+  <section class="max-w-4xl mx-auto px-4 py-10">
+    <h2 class="text-2xl font-bold text-gray-900 mb-3">Why These Tools?</h2>
+    <p class="text-gray-600 leading-relaxed">
+      Most AI website builders are closed platforms — they generate your site but lock you into their ecosystem.
+      The tools on this page are different: they produce exportable, maintainable code that you can take anywhere.
+      Whether you need a GitHub-connected React app, a multi-framework browser IDE, or a platform with a public API,
+      these are the best options available in 2025.
+    </p>
+  </section>
+
+  <!-- Developer tool cards grid -->
+  <section class="max-w-4xl mx-auto px-4 pb-12">
+    <div class="space-y-6">
+      {devTools.map((tool, index) => (
+        <ToolCard tool={tool} rank={index + 1} />
+      ))}
+    </div>
+  </section>
+
+  <!-- FAQ Section with accordion-style details -->
+  <section class="max-w-4xl mx-auto px-4 py-12">
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">Developer FAQ</h2>
+    <div class="space-y-4">
+      {faqItems.map(item => (
+        <details class="bg-white border border-gray-200 rounded-xl p-5 group">
+          <summary class="font-semibold text-gray-900 cursor-pointer list-none flex justify-between items-center">
+            {item.question}
+            <span class="text-gray-400 group-open:rotate-180 transition-transform ml-4 shrink-0">▼</span>
+          </summary>
+          <p class="mt-3 text-gray-600 text-sm leading-relaxed">{item.answer}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <!-- Call-to-Action section -->
+  <section class="bg-gray-900 text-white py-12 px-4">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-2xl font-bold mb-4">Compare developer tools side by side</h2>
+      <p class="text-gray-300 mb-6">Use our interactive comparison table to see code export and API support at a glance.</p>
+      <a href="/comparison/" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-colors">
+        Open Comparison Tool →
+      </a>
+    </div>
+  </section>
+</BaseLayout>

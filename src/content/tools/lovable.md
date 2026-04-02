@@ -33,6 +33,9 @@ categories: ["blog"]
 datePublished: 2025-03-01
 dateModified: 2025-03-20
 featured: false
+exportFormats: ["React", "GitHub"]
+hasApi: false
+communitySize: 39484
 ---
 
 ## What is Lovable?
